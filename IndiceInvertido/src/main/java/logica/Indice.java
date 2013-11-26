@@ -23,7 +23,7 @@ public class Indice {
 	 * Metodo constructor, recibe como parametro data, el cual sirve para construir el indice. 
 	 * Se guarda una copia, para despues, al hacer la consulta, poder devolver la/s frase/s que hace/n matching con la consulta.
 	 * El indice se construye llamando a un metodo privado que recibe un String[] y llena una estructura de HASH con los tokens.
-	 * @param data : Es un String[]
+	 * @param data : Es un String[] que contiene las frases
 	 */
 	
 	public Indice(String[] data) {
@@ -32,6 +32,13 @@ public class Indice {
 		crearIndice(data);
 	}
 
+	/**
+	 * Metodo privado que se encarga de crear el Indice.
+	 * Toma una frase, recorre palabra por palabra y la va agregando al indice, utilizando el metodo
+	 * privado 'AgregarAHash'.
+	 * @param data: Es un String[] que contiene las frases
+	 */
+	
 	private void crearIndice(String[] data) {
 		// Recorro data y vos haciendo tokens por palabra y agregandola a la tabla de hash
 		// En caso de que ya exista, se actualizara la informacion
@@ -57,9 +64,11 @@ public class Indice {
 	}
 
 	/**
-	 * 
-	 * @param palabra
-	 * @param pos
+	 * Metodo privado que se encarga de agregar la palabra a la HASH.
+	 * En caso de que no exista, la agrega.
+	 * Si ya existe, actualiza el vector que guarda la lista de las frases que contienen dicha palabra
+	 * @param palabra: palabra que debe hacer matching
+	 * @param pos: lo utilizo para saber que frase es la que contiene esa palabra
 	 */
 	
 	private void AgregarAHash(String palabra, int pos) {
@@ -88,22 +97,38 @@ public class Indice {
 		}
 	}
 
-	private Vector<?> obtenerListaNroLinea(String palabra){
-		Vector numero = new Vector();
+	/**
+	 * Metodo privado que se encarga de construir un vector que contiene los numeros de las frases que contienen
+	 * la palabra de la consulta.	
+	 * @param palabra: palabra que debe hacer matching
+	 * @return Vector de enteros
+	 */
+	private Vector<Integer> obtenerListaNroLinea(String palabra){
+		Vector<Integer> numero = new Vector<Integer>();
 		if (indice.containsKey(palabra))
-			numero = (Vector) indice.get(palabra);
+			numero = (Vector<Integer>) indice.get(palabra);
 		return numero;
 	}
 	
 	
+	/**
+	 * Metodo que recibe como parametro una palabra y devuelve un arreglo de String que contiene la lista de las frases 
+	 * que hacen matching con la palabra.
+	 * Este metodo utiliza el metodo privado 'obtenerListaNroLinea'.
+	 * 
+	 * @param palabra: palabra que se quiere buscar y conseguir las frases
+	 * @return la lista de frases que contienen la palabra pasada como parametro
+	 */
+	
 	public String[] get(String palabra) {
 		// Obtengo el vector desde la tabla de HASH con KEY = palabra
-		Vector lista = obtenerListaNroLinea(palabra);
+		Vector<Integer> lista = obtenerListaNroLinea(palabra);
 		// String que se sirve para retornar el resultado de la consulta
 		String[] resultado = new String[lista.size()];
 		// Recorro la lista y voy agregando a resultado, las lineas originales
 		for (int i=0; i< lista.size(); i++){
 			int pos = (Integer) lista.elementAt(i);
+			// Obtengo la frase que contiene la palabra pasada por parametro
 			String aux = "\"" + data[pos] + "\"";
 			resultado[i] = aux;
 		}

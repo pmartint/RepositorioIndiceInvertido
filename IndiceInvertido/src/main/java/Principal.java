@@ -18,10 +18,11 @@ public class Principal {
         Indice invertedIndex = new Indice(data); 
         
 // Consulta Nº1:
+        
         String[] results = invertedIndex.get("music");
         
         // Debe mostrar 2
-        System.out.println(results.length);   
+        System.out.println("Cantidad por la consulta 'music': " + results.length);   
             
         // Debe mostrar [".... music, writes Peter Conrad","Another book with music related ..."]
         System.out.println(Arrays.toString(results)); 	
@@ -30,7 +31,7 @@ public class Principal {
         results = invertedIndex.get("and");
 
         // Debe mostrar 3
-        System.out.println(results.length);   
+        System.out.println("Cantidad por la consulta 'and': " + results.length);   
             
         // Debe mostrar [A brilliant, festive study of JS Bach uses literature and painting to illuminate his 'dance-impregnated' music, writes Peter Conrad, Fatima Bhutto on Malala Yousafzai's fearless and still-controversial memoir, This strange repackaging of bits and pieces does the Man Booker winner no favours, says Sam Leith]
         System.out.println(Arrays.toString(results)); 	
