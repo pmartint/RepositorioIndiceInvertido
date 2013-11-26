@@ -3,17 +3,32 @@ package logica;
 import java.util.Hashtable;
 import java.util.Vector;
 
+/**
+ * 
+ * Clase encargada de todo el manejo interno del Indice Invertido. 
+ * Recibe como parametro un String[], a partir del cual se crea la estructura para crear el indice a traves de una HashTable. 
+ * 
+ * @author Pablo
+ */
+
 public class Indice {
 
 // Variables de la clase
 	
 	// Hashtable donde se almacenaran las palabras cmo clave 
-	private Hashtable indice;
+	private Hashtable<String, Vector<Integer>> indice;
 	private String[] data;
+	
+	/**
+	 * Metodo constructor, recibe como parametro data, el cual sirve para construir el indice. 
+	 * Se guarda una copia, para despues, al hacer la consulta, poder devolver la/s frase/s que hace/n matching con la consulta.
+	 * El indice se construye llamando a un metodo privado que recibe un String[] y llena una estructura de HASH con los tokens.
+	 * @param data : Es un String[]
+	 */
 	
 	public Indice(String[] data) {
 		this.data = data;
-		indice = new Hashtable();
+		indice = new Hashtable<String, Vector<Integer>>();
 		crearIndice(data);
 	}
 
@@ -41,12 +56,18 @@ public class Indice {
 		}
 	}
 
+	/**
+	 * 
+	 * @param palabra
+	 * @param pos
+	 */
+	
 	private void AgregarAHash(String palabra, int pos) {
-		Vector nrolinea;
+		Vector<Integer> nrolinea;
 		// Si no esta la palabra en la Hash
 		if (!indice.containsKey(palabra)){
 			// Creo el vector donde se va a guardar las lineas que contienen a la palabra
-			nrolinea = new Vector();
+			nrolinea = new Vector<Integer>();
 			// Agrego el nro de la linea en donde esta esa palabra
 			nrolinea.addElement(pos);
 			// Agrego la palabra a la tabla de HASH
@@ -54,7 +75,7 @@ public class Indice {
 		}
 		else {
 			// Obtengo el vector de la palabra
-			nrolinea = (Vector) indice.get(palabra);
+			nrolinea = (Vector<Integer>) indice.get(palabra);
 			// Si no esta ese numero "pos" en el vector, lo agrego 
 			if (!nrolinea.contains(pos)){
 				// Borro la clave
@@ -67,7 +88,7 @@ public class Indice {
 		}
 	}
 
-	private Vector obtenerListaNroLinea(String palabra){
+	private Vector<?> obtenerListaNroLinea(String palabra){
 		Vector numero = new Vector();
 		if (indice.containsKey(palabra))
 			numero = (Vector) indice.get(palabra);
